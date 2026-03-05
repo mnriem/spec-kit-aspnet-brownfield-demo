@@ -1,0 +1,46 @@
+﻿@model PagedData<Supplier>
+
+@{
+	ViewBag.Title = "Suppliers";
+}
+
+<h3>@ViewBag.SiteID</h3>
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "sortTable" })) {
+	@Html.AntiForgeryToken()
+
+	var grid = Html.CarrotWeb().CarrotWebGrid<Supplier>(Model);
+	grid.PrettifyHeadings = true;
+	grid.SetTableAttributes(new { @class = "datatable table" }, new { @class = "tablehead header thead-dark" }, null);
+	grid.SetupFooter("ul", new { @class = "tablepager ui-widget ui-helper-clearfix" }, "li", new { @class = "ui-state-default ui-state-active ui-corner-all" }, new { @class = "ui-state-default ui-corner-all" });
+
+	grid.ConfigName(Html.NameFor(x => x));
+
+	grid
+		.AddColumn(x => x.SupplierId, new CarrotGridColumn { HeaderText = "ID", Sortable = true })
+		.AddColumn(new CarrotGridTemplateColumn<Supplier> {
+			HeaderText = "Edit",
+			FormatTemplate = @<text> @Html.CarrotWeb().ActionImage("ViewSupplier", "Admin", new { @id = @item.SupplierId, @area=ViewBag.WidgetAssemblyName }, "~/assets/admin/images/pencil.png", @item.SupplierId.ToString(), null, null) </text>
+		})
+		.AddColumn(new CarrotGridTemplateColumn<Supplier> {
+			FormatTemplate = @<text> @grid.FormFieldFor(m => m.CompanyName, GridFormFieldType.TextBox, new { maxlength = "64", @class = "form-control" }) </text>
+		})
+		.AddColumn(new CarrotGridTemplateColumn<Supplier> {
+			FormatTemplate = @<text> @grid.FormFieldFor(m => m.ContactName, GridFormFieldType.TextBox, new { maxlength = "64", @class = "form-control" }) </text>
+		})
+		.AddColumn(x => x.CompanyName, new CarrotGridColumn { Sortable = true })
+		.AddColumn(x => x.ContactName, new CarrotGridColumn { Sortable = true })
+		.AddColumn(x => x.Address, new CarrotGridColumn { Sortable = true })
+		.AddColumn(x => x.City, new CarrotGridColumn { Sortable = true })
+		.AddColumn(x => x.Country, new CarrotGridColumn { Sortable = true })
+		.AddColumn(x => x.Phone, new CarrotGridColumn { Sortable = true });
+
+	@grid.OutputHtmlBody()
+
+	<nav>
+		@{
+			@grid.OutputFooter()
+		}
+	</nav>
+
+}

@@ -1,0 +1,34 @@
+{
+	"profiles": {
+		//"CMSAdminMVC": {
+		//	"commandName": "Project",
+		//	"launchBrowser": true,
+		//	"environmentVariables": {
+		//		"ASPNETCORE_ENVIRONMENT": "Development"
+		//	},
+		//	"hotReloadEnabled": false,
+		//	"dotnetRunMessages": true,
+		//	//"applicationUrl": "https://localhost:17710;http://localhost:16710"
+		//	"applicationUrl": "http://localhost:16710"
+		//},
+		"IIS Express": {
+			"hotReloadEnabled": false,
+			"commandName": "IISExpress",
+			"launchBrowser": true,
+			//"launchUrl": "/",
+			"environmentVariables": {
+				"ASPNETCORE_ENVIRONMENT": "Development"
+			}
+		}
+	},
+	"iisSettings": {
+		"windowsAuthentication": false,
+		"anonymousAuthentication": true,
+		"hotReloadEnabled": false,
+		"iisExpress": {
+			"applicationUrl": "http://localhost:16715",
+			//"sslPort": 44370
+			"sslPort": 0
+		}
+	}
+}

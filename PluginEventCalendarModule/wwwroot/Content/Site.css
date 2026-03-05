@@ -1,0 +1,82 @@
+﻿body {
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding-top: 60px;
+	padding-bottom: 20px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+	max-width: 280px;
+}
+
+table tr td {
+	padding-top: 4px;
+	padding-bottom: 6px;
+}
+
+.caption, .tablecaption {
+	font-weight: bold;
+}
+
+.caption-right, .tablecaption-right {
+	font-weight: bold;
+	text-align: right;
+	padding-left: 0.2em;
+	padding-right: 0.25em;
+}
+
+.caption-left, .tablecaption-left {
+	font-weight: bold;
+	text-align: right;
+	padding-left: 0.25em;
+	padding-right: 0.2em;
+}
+
+.ui-timepicker-hour-cell a, .ui-timepicker-minute-cell a {
+	min-width: 2.2em;
+}
+
+fieldset, .fieldset-free {
+	clear: both;
+	display: inline;
+	margin: 1.2em 0;
+	padding: 1.3em;
+	border: 1px solid #ccc;
+	margin-bottom: 30px;
+	padding-bottom: 10px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+}
+
+	fieldset legend label, .fieldset-free legend label {
+		display: block;
+		font-size: 1.35em;
+		margin: 0;
+		padding: 0;
+		font-weight: bold;
+		font-family: Georgia, Times New Roman, Serif;
+	}
+
+.bootstrap-content fieldset legend {
+	float: none;
+	width: auto;
+	margin: 2px;
+	padding: 2px;
+	font-size: 1.1em;
+}
+
+legend button, legend .ui-widget, legend .ui-button {
+	font-size: 0.8em;
+}
+
+fieldset legend label.inline {
+	display: inline;
+}

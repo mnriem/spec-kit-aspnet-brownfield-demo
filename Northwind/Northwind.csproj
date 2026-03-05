@@ -1,0 +1,146 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<OutputPath>bin\</OutputPath>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Carrotware</Authors>
+		<Company>Carrotware</Company>
+		<Copyright>$([System.DateTime]::Now.Year)</Copyright>
+		<Product>Carrot Cake CMS Widget</Product>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<VersionPrefix>8.1</VersionPrefix>
+		<VersionSuffix>$([System.DateTime]::UtcNow.ToString("yyMMdd")).$([System.DateTime]::UtcNow.ToString("HHmmss"))</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix).0.0</AssemblyVersion>
+		<Version>$(VersionPrefix).0.0</Version>
+		<FileVersion>$(VersionPrefix).$(VersionSuffix)</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Compile Remove="App_Data\**" />
+		<Compile Remove="wwwroot\lib\**" />
+		<Content Remove="App_Data\**" />
+		<Content Remove="wwwroot\lib\**" />
+		<EmbeddedResource Remove="App_Data\**" />
+		<EmbeddedResource Remove="wwwroot\lib\**" />
+		<None Remove="App_Data\**" />
+		<None Remove="wwwroot\lib\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CMSInterfaces\CMSInterfaces.csproj" />
+		<ProjectReference Include="..\WebComponents\WebComponents.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Core" Version="1.44.1" />
+		<PackageReference Include="Azure.Identity" Version="1.13.0" />
+		<PackageReference Include="bootstrap" Version="3.4.1" />
+		<PackageReference Include="jQuery" Version="3.7.1" />
+		<PackageReference Include="jQuery.UI.Combined" Version="1.13.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="TinyMCE" Version="6.8.5" />
+	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy &quot;$(ProjectDir)\bin\$(TargetName).*&quot; &quot;$(SolutionDir)\CMSAdmin\bin\&quot; /F/R/Y/I/S/C&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\*.config&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\&quot; /F /R /Y /I&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\_ViewImports.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\&quot; /F /R /Y /I&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\Home\*.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\Home\&quot; /F/R/Y/I/S/C&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\Admin\*.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\Admin\&quot; /F/R/Y/I/S/C&#xD;&#xA;&#xD;&#xA;REM (ProjectName) $(ProjectName)&#xD;&#xA;REM (ProjectDir) $(ProjectDir)&#xD;&#xA;REM (SolutionDir) $(SolutionDir)&#xD;&#xA;" />
+	</Target>
+
+	<ItemGroup>
+		<Folder Include="wwwroot\assets\admin\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="wwwroot\assets\chosen.css" />
+		<None Include="wwwroot\assets\jquery.ui.timepicker.css" />
+		<None Include="wwwroot\Content\bootstrap-theme.css" />
+		<None Include="wwwroot\Content\bootstrap-theme.css.map" />
+		<None Include="wwwroot\Content\bootstrap-theme.min.css" />
+		<None Include="wwwroot\Content\bootstrap-theme.min.css.map" />
+		<None Include="wwwroot\Content\bootstrap.css" />
+		<None Include="wwwroot\Content\bootstrap.css.map" />
+		<None Include="wwwroot\Content\bootstrap.min.css" />
+		<None Include="wwwroot\Content\bootstrap.min.css.map" />
+		<None Include="wwwroot\Content\Site.css" />
+		<None Include="wwwroot\Content\themes\base\accordion.css" />
+		<None Include="wwwroot\Content\themes\base\all.css" />
+		<None Include="wwwroot\Content\themes\base\autocomplete.css" />
+		<None Include="wwwroot\Content\themes\base\base.css" />
+		<None Include="wwwroot\Content\themes\base\button.css" />
+		<None Include="wwwroot\Content\themes\base\core.css" />
+		<None Include="wwwroot\Content\themes\base\datepicker.css" />
+		<None Include="wwwroot\Content\themes\base\dialog.css" />
+		<None Include="wwwroot\Content\themes\base\draggable.css" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-icons_222222_256x240.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-icons_454545_256x240.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-icons_888888_256x240.png" />
+		<None Include="wwwroot\Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+		<None Include="wwwroot\Content\themes\base\menu.css" />
+		<None Include="wwwroot\Content\themes\base\progressbar.css" />
+		<None Include="wwwroot\Content\themes\base\resizable.css" />
+		<None Include="wwwroot\Content\themes\base\selectable.css" />
+		<None Include="wwwroot\Content\themes\base\selectmenu.css" />
+		<None Include="wwwroot\Content\themes\base\slider.css" />
+		<None Include="wwwroot\Content\themes\base\sortable.css" />
+		<None Include="wwwroot\Content\themes\base\spinner.css" />
+		<None Include="wwwroot\Content\themes\base\tabs.css" />
+		<None Include="wwwroot\Content\themes\base\theme.css" />
+		<None Include="wwwroot\Content\themes\base\tooltip.css" />
+		<None Include="wwwroot\Content\violet.css" />
+		<None Include="wwwroot\Scripts\bootstrap.js" />
+		<None Include="wwwroot\Scripts\bootstrap.min.js" />
+		<None Include="wwwroot\Scripts\chosen.jquery.js" />
+		<None Include="wwwroot\Scripts\Common.js" />
+		<None Include="wwwroot\Scripts\jquery-1.11.3.intellisense.js" />
+		<None Include="wwwroot\Scripts\jquery-1.11.3.js" />
+		<None Include="wwwroot\Scripts\jquery-1.11.3.min.js" />
+		<None Include="wwwroot\Scripts\jquery-1.11.3.min.map" />
+		<None Include="wwwroot\Scripts\jquery-ui-1.11.4.js" />
+		<None Include="wwwroot\Scripts\jquery-ui-1.11.4.min.js" />
+		<None Include="wwwroot\Scripts\jquery.ui.timepicker.js" />
+		<None Include="wwwroot\Scripts\respond.js" />
+		<None Include="wwwroot\Scripts\respond.matchmedia.addListener.js" />
+		<None Include="wwwroot\Scripts\respond.matchmedia.addListener.min.js" />
+		<None Include="wwwroot\Scripts\respond.min.js" />
+		<None Include="wwwroot\Scripts\_references.js" />
+		<None Include="wwwroot\x-fonts\glyphicons-halflings-regular.eot" />
+		<None Include="wwwroot\x-fonts\glyphicons-halflings-regular.svg" />
+		<None Include="wwwroot\x-fonts\glyphicons-halflings-regular.ttf" />
+		<None Include="wwwroot\x-fonts\glyphicons-halflings-regular.woff" />
+		<None Include="wwwroot\x-fonts\glyphicons-halflings-regular.woff2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="global.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+</Project>

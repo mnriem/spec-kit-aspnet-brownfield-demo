@@ -1,0 +1,254 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<OutputPath>bin\</OutputPath>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<EnableDefaultItems>false</EnableDefaultItems>
+		<RootNamespace>Carrotware.CMS.CoreMVC.UI.Admin</RootNamespace>
+		<AssemblyName>Carrotware.CMS.CoreMVC.UI.Admin</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Carrotware</Authors>
+		<Company>Carrotware</Company>
+		<Copyright>$([System.DateTime]::Now.Year)</Copyright>
+		<AppName>Carrot Cake CMS</AppName>
+		<BuildDateTime>$([System.DateTime]::UtcNow.ToString("yyyy.MM.dd")) $([System.DateTime]::UtcNow.ToString("HH:mm")) UTC</BuildDateTime>
+		<Product Condition="'$(Configuration)' == 'Release'">$(AppName), built @ $(BuildDateTime)</Product>
+		<Product Condition="'$(Configuration)' == 'Debug'">$(AppName), debug built @ $(BuildDateTime)</Product>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<VersionPrefix>8.1</VersionPrefix>
+		<Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
+		<Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
+		<VersionSuffix>$(Build).$(Revision)</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix).0.0</AssemblyVersion>
+		<Version>$(VersionPrefix).0.0</Version>
+		<FileVersion>$(VersionPrefix).$(VersionSuffix)</FileVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+		<!--<PublishWithAspNetCoreTargetManifest>false</PublishWithAspNetCoreTargetManifest>
+		<PreserveCompilationReferences>true</PreserveCompilationReferences>
+		<PreserveCompilationContext>true</PreserveCompilationContext>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>-->
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Core" Version="1.44.1" />
+		<PackageReference Include="Azure.Identity" Version="1.13.0" />
+		<PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
+		<PackageReference Include="Castle.Core" Version="5.1.1" />
+		<PackageReference Include="Humanizer.Core" Version="2.14.1" />
+		<PackageReference Include="MailKit" Version="4.8.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.10" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.10" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Caching.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="8.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="8.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="8.0.1" />
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.65.0" />
+		<PackageReference Include="MimeKit" Version="4.8.0" />
+		<PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+		<PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
+		<PackageReference Include="System.Security.Cryptography.Pkcs" Version="8.0.1" GeneratePathProperty="true" />
+		<PackageReference Include="System.Security.Permissions" Version="8.0.0" />
+		<PackageReference Include="System.Text.Json" Version="8.0.5" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="System.Windows.Extensions" Version="8.0.0" />
+	</ItemGroup>
+
+	<PropertyGroup>
+		<ResolveStaticWebAssetsInputsDependsOn>RemoveIdentityAssets</ResolveStaticWebAssetsInputsDependsOn>
+	</PropertyGroup>
+
+	<Target Name="RemoveIdentityAssets">
+		<ItemGroup>
+			<StaticWebAsset Remove="@(StaticWebAsset)" Condition="%(SourceId) == 'Microsoft.AspNetCore.Identity.UI'" />
+		</ItemGroup>
+	</Target>
+
+	<Target Name="CopySystemSecurityCryptographyPkcs" AfterTargets="Build">
+		<Copy SourceFiles="$(PkgSystem_Security_Cryptography_Pkcs)\lib\net8.0\System.Security.Cryptography.Pkcs.dll" DestinationFolder="$(OutDir)" />
+	</Target>
+
+	<ItemGroup>
+		<None Include="Views\CmsAdmin\*.cshtml" />
+		<None Include="Views\CmsContent\*.cshtml" />
+		<None Include="Views\Shared\*.cshtml" />
+		<None Include="Views\*.cshtml" />
+
+		<Compile Remove="Views\CmsAdmin\*.cshtml" />
+		<Compile Remove="Views\CmsContent\*.cshtml" />
+		<Compile Remove="Views\Shared\*.cshtml" />
+		<Compile Remove="Views\Templates\*.cshtml" />
+		<Compile Remove="Views\*.cshtml" />
+
+		<None Include="Views\CmsAdmin\**\*.cshtml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\CmsContent\**\*.cshtml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\_View*.cshtml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+		<Content Remove="Views\CmsContent\PlainPage\plain.css" />
+		<EmbeddedResource Include="Views\CmsContent\PlainPage\plain.css" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="wwwroot\favicon.ico" />
+
+		<Content Include="appsettings.Development.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="global.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Properties\C3ConfigSchema.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+
+		<Content Include="TextContentProcessors.config">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+
+		<None Include="Views\Templates\Aqueous\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\citrus-island\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\Dragonfruit\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\Imagination\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\oilpainting\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\telephasic\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\Waterdrops\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="Views\Templates\_ViewImports.cshtml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+
+		<Content Include="wwwroot\Assets\Admin\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\Assets\iCheck\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\Assets\MiniColors\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="wwwroot\Assets\tinymce\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+
+		<None Include="wwwroot\Assets\Aqueous\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\Assets\citrus-island\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\Assets\Dragonfruit\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\Assets\Imagination\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\Assets\oilpainting\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\Assets\telephasic\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Include="wwwroot\Assets\Waterdrops\**\*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CMSComponents\CMSComponents.csproj" />
+		<ProjectReference Include="..\CMSCore\CMSCore.csproj" />
+		<ProjectReference Include="..\CMSInterfaces\CMSInterfaces.csproj" />
+		<ProjectReference Include="..\CMSSecurity\CMSSecurity.csproj" />
+		<ProjectReference Include="..\WebComponents\WebComponents.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Include="Code\Helper.cs" />
+		<Compile Include="Controllers\CmsAdminApiController.cs" />
+		<Compile Include="Controllers\CmsAdminController.cs" />
+		<Compile Include="Controllers\CmsContentController.cs" />
+		<Compile Include="Models\ApiModel.cs" />
+		<Compile Include="Models\CommentIndexModel.cs" />
+		<Compile Include="Models\ContentHistoryModel.cs" />
+		<Compile Include="Models\ContentPageModel.cs" />
+		<Compile Include="Models\ContentSingleModel.cs" />
+		<Compile Include="Models\ContentSnippetHistoryModel.cs" />
+		<Compile Include="Models\DashboardInfo.cs" />
+		<Compile Include="Models\DatabaseSetupModel.cs" />
+		<Compile Include="Models\DuplicateWidgetFromModel.cs" />
+		<Compile Include="Models\FileBrowserModel.cs" />
+		<Compile Include="Models\FileUpModel.cs" />
+		<Compile Include="Models\ModuleInfo.cs" />
+		<Compile Include="Models\PageChildSortModel.cs" />
+		<Compile Include="Models\PageHistoryModel.cs" />
+		<Compile Include="Models\PageIndexModel.cs" />
+		<Compile Include="Models\PageTemplateUpdateModel.cs" />
+		<Compile Include="Models\PostCommentModel.cs" />
+		<Compile Include="Models\PostIndexModel.cs" />
+		<Compile Include="Models\PostTemplateUpdateModel.cs" />
+		<Compile Include="Models\RoleModel.cs" />
+		<Compile Include="Models\SiteContentStatusChangeModel.cs" />
+		<Compile Include="Models\SiteDataModel.cs" />
+		<Compile Include="Models\SiteImportNativeModel.cs" />
+		<Compile Include="Models\SiteImportWordpressModel.cs" />
+		<Compile Include="Models\SiteModel.cs" />
+		<Compile Include="Models\SitePageDrillDownModel.cs" />
+		<Compile Include="Models\SiteSkinModel.cs" />
+		<Compile Include="Models\SiteTemplateUpdateModel.cs" />
+		<Compile Include="Models\SplitDateTime.cs" />
+		<Compile Include="Models\UserModel.cs" />
+		<Compile Include="Models\WidgetEditModel.cs" />
+		<Compile Include="Models\WidgetHistoryModel.cs" />
+		<Compile Include="Models\WidgetListModel.cs" />
+		<Compile Include="Models\WidgetProperties.cs" />
+		<Compile Include="Program.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Properties\launchSettings.json" />
+		<Content Include="wwwroot\error.html" />
+		<Content Include="wwwroot\general.html" />
+	</ItemGroup>
+</Project>

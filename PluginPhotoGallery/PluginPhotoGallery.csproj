@@ -1,0 +1,160 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<OutputPath>bin\</OutputPath>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableDefaultItems>false</EnableDefaultItems>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<RootNamespace>CarrotCake.CMS.Plugins.PhotoGallery</RootNamespace>
+		<AssemblyName>CarrotCake.CMS.Plugins.PhotoGallery</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Carrotware</Authors>
+		<Company>Carrotware</Company>
+		<Copyright>$([System.DateTime]::Now.Year)</Copyright>
+		<Product>Carrot Cake CMS Widget</Product>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<VersionPrefix>8.1</VersionPrefix>
+		<VersionSuffix>$([System.DateTime]::UtcNow.ToString("yyMMdd")).$([System.DateTime]::UtcNow.ToString("HHmmss"))</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix).0.0</AssemblyVersion>
+		<Version>$(VersionPrefix).0.0</Version>
+		<FileVersion>$(VersionPrefix).$(VersionSuffix)</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CMSInterfaces\CMSInterfaces.csproj" />
+		<ProjectReference Include="..\WebComponents\WebComponents.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Core" Version="1.44.1" />
+		<PackageReference Include="Azure.Identity" Version="1.13.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.10">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Identity.Client" Version="4.65.0" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Code\GalleryGroup.cs" />
+		<Compile Include="Code\GalleryHelper.cs" />
+		<Compile Include="Code\GalleryImageEntry.cs" />
+		<Compile Include="Code\GalleryMetaData.cs" />
+		<Compile Include="Code\GalleryRegistration.cs" />
+		<Compile Include="Code\GallerySettings.cs" />
+		<Compile Include="Controllers\AdminController.cs" />
+		<Compile Include="Controllers\BasePublicController.cs" />
+		<Compile Include="Controllers\HomeController.cs" />
+		<Compile Include="Controllers\TestController.cs" />
+		<Compile Include="Data\DataHelper.cs" />
+		<Compile Include="Data\Gallery.cs" />
+		<Compile Include="Data\GalleryContext.cs" />
+		<Compile Include="Data\GalleryImage.cs" />
+		<Compile Include="Data\GalleryImageMetaData.cs" />
+		<Compile Include="Data\Migrations\20230625212349_InitialGallery.cs" />
+		<Compile Include="Data\Migrations\20230625212349_InitialGallery.Designer.cs" />
+		<Compile Include="Data\Migrations\GalleryContextModelSnapshot.cs" />
+		<Compile Include="Models\EditPhotoGalleryModel.cs" />
+		<Compile Include="Models\GalleryModel.cs" />
+		<Compile Include="Models\GalleryTest.cs" />
+		<Compile Include="Program.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="appsettings.Development.json" />
+		<Content Include="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="global.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Properties\launchSettings.json" />
+		<Content Include="Views\_ViewImports.cshtml" />
+		<Content Include="Views\_ViewStart.cshtml" />
+		<Content Include="Views\Shared\_Layout.cshtml" />
+		<Content Include="Views\Shared\_LayoutPop.cshtml" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_rounded\btnNext.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_rounded\btnPrevious.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_rounded\contentPattern.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_rounded\default_thumbnail.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_rounded\loader.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_rounded\sprite.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_square\btnNext.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_square\btnPrevious.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_square\contentPattern.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_square\default_thumbnail.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_square\loader.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\dark_square\sprite.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\default_thumb.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\loader.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\sprite.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\sprite_next.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\sprite_prev.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\sprite_x.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\default\sprite_y.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\btnNext.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\btnPrevious.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\contentPatternBottom.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\contentPatternLeft.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\contentPatternRight.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\contentPatternTop.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\default_thumbnail.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\loader.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\facebook\sprite.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_rounded\btnNext.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_rounded\btnPrevious.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_rounded\default_thumbnail.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_rounded\loader.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_rounded\sprite.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_square\btnNext.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_square\btnPrevious.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_square\default_thumbnail.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_square\loader.gif" />
+		<Content Include="wwwroot\Assets\prettyPhoto\light_square\sprite.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\PhotoIcon.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\PhotoIcon2.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\PhotoIcon3.png" />
+		<Content Include="wwwroot\Assets\prettyPhoto\prettyPhoto.css" />
+		<Content Include="wwwroot\Content\calendar.png" />
+		<Content Include="wwwroot\Content\SampleA.png" />
+		<Content Include="wwwroot\Content\SampleB.png" />
+		<Content Include="wwwroot\Content\SampleC.png" />
+		<Content Include="wwwroot\Content\Site.css" />
+		<Content Include="wwwroot\favicon.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="Views\Admin.config" />
+		<None Include="Views\Admin\EditGallery.cshtml" />
+		<None Include="Views\Admin\EditGalleryPhotos.cshtml" />
+		<None Include="Views\Admin\EditImageMetaData.cshtml" />
+		<None Include="Views\Admin\GalleryDatabase.cshtml" />
+		<None Include="Views\Admin\Index.cshtml" />
+		<None Include="Views\Home\Index.cshtml" />
+		<None Include="Views\Home\ShowPrettyPhotoGallery.cshtml" />
+		<None Include="Views\Public.config" />
+		<None Include="Views\Test\Edit.cshtml" />
+		<None Include="Views\Test\GalleryList.cshtml" />
+		<None Include="Views\Test\GalleryView.cshtml" />
+		<None Include="Views\Test\GalleryView2.cshtml" />
+		<None Include="Views\Test\Index.cshtml" />
+		<None Include="Views\Test\TestShowPrettyPhotoGallery.cshtml" />
+		<None Include="Views\Test\View.cshtml" />
+		<None Include="wwwroot\Assets\prettyPhoto\jquery.prettyPhoto.js" />
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy &quot;$(ProjectDir)\bin\$(TargetName).*&quot; &quot;$(SolutionDir)\CMSAdmin\bin\&quot; /F/R/Y/I/S/C&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\*.config&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\&quot; /F /R /Y /I&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\_ViewImports.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\&quot; /F /R /Y /I&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\Home\*.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\Home\&quot; /F/R/Y/I/S/C&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\Admin\*.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\Admin\&quot; /F/R/Y/I/S/C&#xD;&#xA;&#xD;&#xA;REM (ProjectName) $(ProjectName)&#xD;&#xA;REM (ProjectDir) $(ProjectDir)&#xD;&#xA;REM (SolutionDir) $(SolutionDir)&#xD;&#xA;" />
+	</Target>
+
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="xcopy &quot;$(ProjectDir)\wwwroot\Assets\prettyPhoto\*&quot; &quot;$(SolutionDir)\CMSAdmin\wwwroot\Assets\prettyPhoto\&quot; /F/R/Y/I/S/C&#xD;&#xA;&#xD;&#xA;xcopy &quot;$(SolutionDir)\CMSAdmin\wwwroot\Assets\Admin\*.png&quot; &quot;$(ProjectDir)\wwwroot\Assets\Admin\&quot; /F/R/Y/I/S/C&#xD;&#xA;&#xD;&#xA;REM del &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\*.cshtml&quot;&#xD;&#xA;&#xD;&#xA;" />
+	</Target>
+</Project>

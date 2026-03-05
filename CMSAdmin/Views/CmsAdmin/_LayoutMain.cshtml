@@ -1,0 +1,15 @@
+@if (Helper.UseBootstrap) {
+	Layout = "~/Views/CmsAdmin/_LayoutMain_bs.cshtml";
+} else {
+	Layout = "~/Views/CmsAdmin/_LayoutMain_ccc.cshtml";
+}
+
+@section scripts {
+	@RenderSection("scripts", required: false)
+}
+
+@RenderBody()
+
+@section footer {
+	@RenderSection("footer", required: false)
+}

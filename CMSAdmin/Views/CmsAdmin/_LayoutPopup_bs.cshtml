@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = null;
+
+	var versionKey = string.Format("cms={0}", SiteData.CurrentDLLVersion);
+}
+<html lang="en" data-bs-theme="auto">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>
+		@String.Format("{0} - {1}", ViewBag.Title, SiteData.CarrotCakeCMSVersionMM)
+	</title>
+
+	@Html.Partial("~/Views/CmsAdmin/_popupCommonHead.cshtml")
+
+	@RenderSection("scripts", required: false)
+</head>
+<body>
+	@Html.Partial("~/Views/CmsAdmin/_popupCommonFoot.cshtml")
+
+	<div class="bootstrap-content">
+		<h1 class="headingColor">
+			@ViewBag.Title
+		</h1>
+
+		<div id="cmsAjaxMainDiv">
+			<div id="ajaxUpdatePanel">
+				@RenderBody()
+			</div>
+		</div>
+	</div>
+
+	@RenderSection("footer", required: false)
+
+	<div>
+		@{
+			string partialView = Helper.InsertSpecialView(Helper.ViewLocation.AdminPopupFooter);
+			if (!String.IsNullOrEmpty(partialView)) {
+				@Html.Partial(partialView)
+			}
+		}
+	</div>
+</body>
+</html>

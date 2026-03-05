@@ -1,0 +1,83 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<OutputType>Library</OutputType>
+		<NoDefaultLaunchSettingsFile>true</NoDefaultLaunchSettingsFile>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<RootNamespace>Carrotware.CMS.UI.Components</RootNamespace>
+		<AssemblyName>Carrotware.CMS.UI.Components</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Carrotware</Authors>
+		<Company>Carrotware</Company>
+		<Copyright>$([System.DateTime]::Now.Year)</Copyright>
+		<AppName>Carrot Cake CMS</AppName>
+		<BuildDateTime>$([System.DateTime]::UtcNow.ToString("yyyy.MM.dd")) $([System.DateTime]::UtcNow.ToString("HH:mm")) UTC</BuildDateTime>
+		<Product Condition="'$(Configuration)' == 'Release'">$(AppName), built @ $(BuildDateTime)</Product>
+		<Product Condition="'$(Configuration)' == 'Debug'">$(AppName), debug built @ $(BuildDateTime)</Product>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<VersionPrefix>8.1</VersionPrefix>
+		<Build>$([System.DateTime]::op_Subtraction($([System.DateTime]::get_Now().get_Date()),$([System.DateTime]::new(2000,1,1))).get_TotalDays())</Build>
+		<Revision>$([MSBuild]::Divide($([System.DateTime]::get_Now().get_TimeOfDay().get_TotalSeconds()), 2).ToString('F0'))</Revision>
+		<VersionSuffix>$(Build).$(Revision)</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix).0.0</AssemblyVersion>
+		<Version>$(VersionPrefix).0.0</Version>
+		<FileVersion>$(VersionPrefix).$(VersionSuffix)</FileVersion>
+	</PropertyGroup>
+
+
+	<PropertyGroup>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Remove="compilerconfig.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="adminHelp.js" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="adminHelp.js" />
+		<EmbeddedResource Include="feed.png" />
+		<EmbeddedResource Include="_WidgetWrapper.cshtml" />
+		<EmbeddedResource Include="TopMenu.txt" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CMSCore\CMSCore.csproj" />
+		<ProjectReference Include="..\CMSInterfaces\CMSInterfaces.csproj" />
+		<ProjectReference Include="..\CMSSecurity\CMSSecurity.csproj" />
+		<ProjectReference Include="..\WebComponents\WebComponents.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="_TextZone.cshtml" />
+		<EmbeddedResource Include="_WidgetZone.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="compilerconfig.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+		<Exec Command="xcopy &quot;$(ProjectDir)\skins\*.min.css&quot; &quot;$(SolutionDir)\CMSAdmin\wwwroot\Assets\Admin\skins\&quot; /F/R/Y/I/S/C&#xD;&#xA;xcopy &quot;$(ProjectDir)\editor\*.min.css&quot; &quot;$(SolutionDir)\CMSAdmin\wwwroot\Assets\Admin\editor\&quot; /F/R/Y/I/S/C&#xD;&#xA;" ContinueOnError="WarnAndContinue" />
+	</Target>
+</Project>

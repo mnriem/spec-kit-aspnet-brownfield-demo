@@ -1,0 +1,91 @@
+﻿/*
+* This LESS template for Bootstrap
+* http://www.carrotware.com/
+* Copyright 2024, Samantha Copeland
+* Dual licensed under the MIT or GPL Version 3 licenses.
+* Date: May 2024
+*/
+.navbar-dark {
+  background-color: #721a1f;
+}
+.navbar-dark .navbar-nav > .active > a:hover,
+.navbar-dark .navbar-nav > li > a:hover,
+.navbar-dark .navbar-nav > li > a:focus {
+  background-color: #c12d34;
+}
+.navbar-dark .navbar-nav > .active > a,
+.navbar-dark .navbar-nav > .open > a,
+.navbar-dark .navbar-nav > .open > a,
+.navbar-dark .navbar-nav > .open > a:hover,
+.navbar-dark .navbar-nav > .open > a,
+.navbar-dark .navbar-nav > .open > a:hover,
+.navbar-dark .navbar-nav > .open > a:focus {
+  background-color: #c12d34;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background-color: #e7969a;
+  color: #ffffff;
+}
+.navbar-dark {
+  background-image: none;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background-image: none;
+}
+.navbar-dark {
+  border-color: #cd3037;
+}
+.navbar-dark .navbar-brand {
+  color: #fefefe;
+}
+.navbar-dark .navbar-brand:hover {
+  color: #fefefe;
+}
+.navbar-dark .navbar-nav > li > a {
+  color: #fefefe;
+}
+.navbar-dark .navbar-nav > li > a:hover,
+.navbar-dark .navbar-nav > li > a:focus {
+  color: #fefefe;
+}
+.navbar-dark .navbar-nav > .active > a,
+.navbar-dark .navbar-nav > .open > a,
+.navbar-dark .navbar-nav > .open > a:hover,
+.navbar-dark .navbar-nav > .open > a:focus {
+  color: #fefefe;
+}
+.navbar-dark .navbar-nav > .active > a:hover,
+.navbar-dark .navbar-nav > .active > a:focus {
+  color: #fefefe;
+}
+.dropdown-menu > li > a:hover,
+.dropdown-menu > li > a:focus {
+  background-color: #e7969a;
+  color: #ffffff;
+}
+.navbar-dark .navbar-nav > .dropdown > a .caret {
+  border-top-color: #fefefe;
+}
+.navbar-dark .navbar-nav > .dropdown > a:hover .caret {
+  border-top-color: #fefefe;
+}
+.navbar-dark .navbar-nav > .dropdown > a .caret {
+  border-bottom-color: #fefefe;
+}
+.navbar-dark .navbar-nav > .dropdown > a:hover .caret {
+  border-bottom-color: #fefefe;
+}
+.btn-primary {
+  --bs-btn-color: #fefefe;
+  --bs-btn-bg: #7b1c21;
+  --bs-btn-border-color: #7b1c21;
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: #e7969a;
+  --bs-btn-hover-border-color: #3c0e10;
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: #e7969a;
+  --bs-btn-disabled-color: #fefefe;
+  --bs-btn-disabled-bg: #dd6c72;
+}

@@ -1,0 +1,40 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: carrotcake-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      SA_PASSWORD: ${SA_PASSWORD:?SA_PASSWORD must be set. Copy .env.example to .env and provide a strong password meeting SQL Server complexity requirements.}
+    ports:
+      - "${SQL_PORT:-1433}:1433"
+    volumes:
+      - carrotcake-sqldata:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$SA_PASSWORD\" -Q 'SELECT 1' -No || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    restart: unless-stopped
+
+  db-init:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: carrotcake-db-init
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    entrypoint: ["/bin/bash", "/docker/init-db.sh"]
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD:?SA_PASSWORD must be set. Copy .env.example to .env and provide a strong password meeting SQL Server complexity requirements.}
+    volumes:
+      - ./CMSDataScripts:/scripts/carrot:ro
+      - ./Northwind:/scripts/northwind:ro
+      - ./docker/init-db.sh:/docker/init-db.sh:ro
+    restart: "no"
+
+volumes:
+  carrotcake-sqldata:
+    driver: local

@@ -1,0 +1,92 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<OutputPath>bin\</OutputPath>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<EnableDefaultItems>false</EnableDefaultItems>
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+		<RootNamespace>CarrotCake.CMS.Plugins.LoremIpsum</RootNamespace>
+		<AssemblyName>LoremIpsum</AssemblyName>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<Authors>Carrotware</Authors>
+		<Company>Carrotware</Company>
+		<Copyright>$([System.DateTime]::Now.Year)</Copyright>
+		<Product>Carrot Cake CMS Widget</Product>
+		<GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+		<VersionPrefix>8.1</VersionPrefix>
+		<VersionSuffix>$([System.DateTime]::UtcNow.ToString("yyMMdd")).$([System.DateTime]::UtcNow.ToString("HHmmss"))</VersionSuffix>
+		<AssemblyVersion>$(VersionPrefix).0.0</AssemblyVersion>
+		<Version>$(VersionPrefix).0.0</Version>
+		<FileVersion>$(VersionPrefix).$(VersionSuffix)</FileVersion>
+	</PropertyGroup>
+
+
+	<PropertyGroup>
+		<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+		<GenerateRuntimeConfigDevFile>true</GenerateRuntimeConfigDevFile>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.10" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="Code\lorem.txt" />
+		<Content Include="appsettings.Development.json" />
+		<Content Include="appsettings.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="Code\LoremRegistration.cs" />
+		<Compile Include="Code\WebHelper.cs" />
+		<Compile Include="Controllers\AdminController.cs" />
+		<Compile Include="Models\ContentCreator.cs" />
+		<Compile Include="Program.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="global.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Properties\C3ConfigSchema.json" />
+		<Content Include="Properties\launchSettings.json" />
+		<Content Include="Views\_ViewStart.cshtml" />
+		<Content Include="Views\Shared\_Layout.cshtml" />
+		<Content Include="wwwroot\Content\calendar.png" />
+		<Content Include="wwwroot\Content\Site.css" />
+		<Content Include="wwwroot\favicon.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\CMSCore\CMSCore.csproj" />
+		<ProjectReference Include="..\CMSInterfaces\CMSInterfaces.csproj" />
+		<ProjectReference Include="..\WebComponents\WebComponents.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Views\Shared\_LayoutPop.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Views\_ViewImports.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="Views\Admin.config" />
+		<None Include="Views\Admin\Index.cshtml" />
+		<None Include="Views\Admin\View.cshtml" />
+		<None Include="Views\Admin\Login.cshtml" />
+		<None Include="Views\Shared\_LayoutModule.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="xcopy &quot;$(ProjectDir)\bin\$(TargetName).*&quot; &quot;$(SolutionDir)\CMSAdmin\bin\&quot; /F/R/Y/I/S/C&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\*.config&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\&quot; /F /R /Y /I&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\_ViewImports.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\&quot; /F /R /Y /I&#xD;&#xA;xcopy &quot;$(ProjectDir)\Views\Admin\*.cshtml&quot; &quot;$(SolutionDir)\CMSAdmin\Views\$(TargetName)\Admin\&quot; /F/R/Y/I/S/C&#xD;&#xA;&#xD;&#xA;REM (ProjectName) $(ProjectName)&#xD;&#xA;REM (ProjectDir) $(ProjectDir)&#xD;&#xA;REM (SolutionDir) $(SolutionDir)&#xD;&#xA;" />
+	</Target>
+</Project>

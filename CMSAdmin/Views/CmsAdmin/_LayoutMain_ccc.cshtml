@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = null;
+
+	bool siteExists = SiteData.CurrentSiteExists;
+	var versionKey = string.Format("cms={0}", SiteData.CurrentDLLVersion);
+
+	var siteCaption = "<span>&nbsp;</span>";
+
+	if (siteExists) {
+		if (!string.IsNullOrEmpty(SiteData.CurrentSite.SiteTagline)
+				&& !string.IsNullOrEmpty(SiteData.CurrentSite.SiteTagline)) {
+			siteCaption = string.Format("{0}:  {1}", SiteData.CurrentSite.SiteName, SiteData.CurrentSite.SiteTagline);
+		} else {
+			siteCaption = string.Format("{0}  {1}", SiteData.CurrentSite.SiteName, SiteData.CurrentSite.SiteTagline);
+		}
+	}
+}
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>
+		@String.Format("{0} - {1}", SiteData.CarrotCakeCMSVersionMM, ViewBag.Title)
+	</title>
+
+	@Html.Partial("~/Views/CmsAdmin/_mainCommonHead.cshtml")
+
+	@RenderSection("scripts", required: false)
+	<script>
+		$(document).ready(function () {
+			$(window).on("scroll", onScroll);
+			onScroll(null);
+		});
+
+		function onScroll(event) {
+			var scrollPos = $(window).scrollTop();
+
+			if ($("#headercontainer").length > 0) {
+				var refElement = $("#headercontainer");
+				var mnuElement = $("#nav-menu-container");
+				//console.log(scrollPos + ' | ' + refElement.height());
+
+				if (scrollPos > (refElement.height() - mnuElement.height())) {
+					$("#nav-break").css('height', '5.5em');
+					$("#headercontainer").css('height', '2.25em');
+					$("#headercontainer").css('min-height', '75px');
+					$("#nav-menu-container").css('top', '3.25em');
+					$("#header").css('display', 'none');
+					$("#header-sm").css('display', '');
+				} else {
+					$("#nav-break").css('height', '');
+					$("#headercontainer").css('height', '');
+					$("#headercontainer").css('min-height', '');
+					$("#nav-menu-container").css('top', '');
+					$("#header").css('display', '');
+					$("#header-sm").css('display', 'none');
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="cmsAjaxMainDiv">
+		<div id="headercontainer">
+			<div id="header">
+				<h2>
+					@SiteData.CarrotCakeCMSVersionMM
+				</h2>
+				<div style="clear: both">
+				</div>
+				<h3>
+					@Html.Raw(siteCaption)
+				</h3>
+			</div>
+			<div id="header-sm" style="display: none">
+				<h3>
+					@SiteData.CarrotCakeCMSVersionMM
+					@if (siteExists) {
+						<span> | </span>
+					}
+					@Html.Raw(siteCaption)
+				</h3>
+			</div>
+		</div>
+		<div id="nav-menu-container">
+			<ul id="nav-menu">
+				<li id="tabHome">
+					<a href="@SiteData.AdminFolderPath">
+						<img alt="Home" src="~/Assets/Admin/Images/house.png" />
+					</a>
+				</li>
+
+				@using (Html.CarrotWeb().BeginWrappedItem("li", "Index;SiteInfo;ContentEditHistory;SiteSkinIndex;SiteSkinEdit;SiteTemplateUpdate;SiteDataExport;ContentImport;SiteContentStatusChange;SiteSkinIndex", CmsRouteConstants.CmsController.Admin, new { @id = "tabMainTop", @class = "current sub" }, new { @id = "tabMainTop", @class = "sub" })) {
+					<a href="javascript:void(0)" class="lnkPopup">Site </a>
+					<ul class="children">
+						<li id="tabMain"><a href="@SiteFilename.SiteInfoURL">Site Info</a> </li>
+						@if (siteExists) {
+							<li id="tabHistory"><a href="@SiteFilename.ContentEditHistoryURL">Content Edit History</a> </li>
+							<li id="tabContentSkin"><a href="@SiteFilename.SiteSkinIndexURL">Site Skin Index</a> </li>
+							<li id="tabMainTemplate"><a href="@SiteFilename.SiteTemplateUpdateURL">Bulk Apply Templates</a> </li>
+							<li id="tabStatusChange"><a href="@SiteFilename.SiteContentStatusChangeURL">Bulk Change Status</a> </li>
+							<li id="tabExportSite"><a href="@SiteFilename.SiteExportURL">Export Site</a> </li>
+							<li id="tabImportContent"><a href="@SiteFilename.ContentImportURL">Import Content</a> </li>
+						}
+					</ul>
+				}
+
+				@if (siteExists) {
+					using (Html.CarrotWeb().BeginWrappedItem("li", "PageIndex;PageAddEdit;PageTemplateUpdate;SiteMap;PageCommentIndex", CmsRouteConstants.CmsController.Admin, new { @id = "tabContentTop", @class = "current sub" }, new { @id = "tabContentTop", @class = "sub" })) {
+						<a href="javascript:void(0)" class="lnkPopup">Pages </a>
+						<ul class="children">
+							<li id="tabContent"><a href="@SiteFilename.PageIndexURL">Page Index</a> </li>
+							<li id="tabAddContent"><a href="@SiteFilename.PageAddEditURL">Add Page</a> </li>
+							<li id="tabContentTemplate"><a href="@SiteFilename.PageTemplateUpdateURL">Bulk Apply Templates</a> </li>
+							<li id="tabContentSiteMap"><a href="@SiteFilename.SiteMapURL">Edit Site Map</a> </li>
+							<li id="tabContentCommentIndex"><a href="@SiteFilename.PageCommentIndexURL">Page Comment Index</a> </li>
+						</ul>
+					}
+
+					using (Html.CarrotWeb().BeginWrappedItem("li", "BlogPostIndex;BlogPostAddEdit;BlogPostTemplateUpdate;CategoryIndex;CategoryAddEdit;TagIndex;TagAddEdit;BlogPostCommentIndex", CmsRouteConstants.CmsController.Admin, new { @id = "tabBlogTop", @class = "current sub" }, new { @id = "tabBlogTop", @class = "sub" })) {
+						<a href="javascript:void(0)" class="lnkPopup">Posts </a>
+						<ul class="children">
+							<li id="tabBlogContent"><a href="@SiteFilename.BlogPostIndexURL">Blog Post Index</a> </li>
+							<li id="tabAddBlogContent"><a href="@SiteFilename.BlogPostAddEditURL">Add Blog Post</a> </li>
+							<li id="tabBlogTemplate"><a href="@SiteFilename.BlogPostTemplateUpdateURL">Bulk Apply Templates</a> </li>
+							<li id="tabBlogCategoryIndex"><a href="@SiteFilename.CategoryIndexURL">Blog Category Index</a> </li>
+							<li id="tabBlogTagIndex"><a href="@SiteFilename.TagIndexURL">Blog Tag Index</a> </li>
+							<li id="tabBlogCommentIndex"><a href="@SiteFilename.BlogPostCommentIndexURL">Blog Comment Index</a> </li>
+						</ul>
+					}
+
+					using (Html.CarrotWeb().BeginWrappedItem("li", "ModuleIndex;TextWidgetIndex;ContentSnippetIndex;ContentSnippetAddEdit", CmsRouteConstants.CmsController.Admin, new { @id = "tabExtensions", @class = "current sub" }, new { @id = "tabExtensions", @class = "sub" })) {
+						<a href="javascript:void(0)" class="lnkPopup">Extensions </a>
+						<ul class="children">
+							<li id="tabModules"><a href="@SiteFilename.ModuleIndexURL">Modules</a> </li>
+							<li id="tabTxtWidgets"><a href="@SiteFilename.TextWidgetIndexURL">Text Widgets</a> </li>
+							<li id="tabSnippets"><a href="@SiteFilename.ContentSnippetIndexURL">Content Snippets</a> </li>
+						</ul>
+					}
+				}
+
+				<li><a href="javascript:void(0)" class="lnkPopup" onclick="cmsFileBrowserOpen('not-a-real-file')">Browse Files</a> </li>
+
+				@if (SecurityData.IsAdmin) {
+					using (Html.CarrotWeb().BeginWrappedItem("li", "UserIndex;RoleIndex;RoleAddEdit;UserAdd;UserEdit;SiteIndex;SiteDetail", CmsRouteConstants.CmsController.Admin, new { @id = "tabUserSecurity", @class = "current sub" }, new { @id = "tabUserSecurity", @class = "sub" })) {
+						<a href="javascript:void(0)" class="lnkPopup">Security </a>
+						<ul class="children">
+							<li id="tabUserAdmin"><a href="@SiteFilename.UserIndexURL">Users</a> </li>
+							<li id="tabGroupAdmin"><a href="@SiteFilename.RoleIndexURL">Roles</a> </li>
+							<li id="tabSites"><a href="@SiteFilename.SiteIndexURL">Sites</a> </li>
+						</ul>
+					}
+				}
+
+				<li><a href="javascript:void(0)" class="lnkPopup" onclick="ShowWindowNoRefresh('@SiteFilename.AboutURL')">About</a></li>
+
+				<li><a class="lnkPopup" target="_blank" href="~/">View Site</a> </li>
+
+				<li id="tabProfileTop" class="sub">
+					<a href="javascript:void(0)" class="lnkPopup">
+						@String.Format("My Profile [{0}]", SecurityData.CurrentUserIdentityName)
+					</a>
+					<ul class="children">
+						<li><a href="javascript:void(0)" class="lnkPopup" onclick="ShowWindowNoRefresh('@SiteFilename.UserProfileURL');">Edit Profile</a> </li>
+						<li><a href="javascript:void(0)" class="lnkPopup" onclick="ShowWindowNoRefresh('@SiteFilename.ChangePasswordURL');">Change Password</a> </li>
+						<li><a href="javascript:void(0)" class="lnkPopup" onclick="LogoutLink();">Logout</a> </li>
+					</ul>
+				</li>
+				<li>&nbsp;</li>
+			</ul>
+		</div>
+		<div id="nav-break">
+		</div>
+		<div id="content">
+			<div class="pad-content">
+				<h1 class="headingColor">
+					@ViewBag.Title
+				</h1>
+
+				<div id="cmsAjaxMainDiv">
+					<div id="ajaxUpdatePanel">
+
+						@RenderBody()
+					</div>
+				</div>
+			</div>
+		</div>
+
+		@Html.Partial("~/Views/CmsAdmin/_mainCommonFoot.cshtml")
+
+		<div id="footer">
+			<div id="footer-inner">
+				<p>
+					&copy; <a target="_blank" href="http://www.carrotware.com">carrotware.com</a>
+					@String.Format(" 2001 - {0:yyyy} ", DateTime.UtcNow)
+					<br />
+					@SiteData.CarrotCakeCMSVersion
+					<br />
+					@if (SiteData.CurrentSite != null) {
+						<span>
+							Site Time: @SiteData.CurrentSite.Now
+							@SiteData.CurrentSite.TimeZoneIdentifier
+						</span>
+						<br />
+					}
+				</p>
+			</div>
+		</div>
+	</div>
+	@RenderSection("footer", required: false)
+
+	<div>
+		@{
+			string partialView = Helper.InsertSpecialView(Helper.ViewLocation.AdminMainFooter);
+			if (!string.IsNullOrEmpty(partialView)) {
+				@Html.Partial(partialView)
+			}
+		}
+	</div>
+</body>
+</html>

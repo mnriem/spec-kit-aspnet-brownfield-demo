@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = null;
+
+	string assemblyName = ViewBag.WidgetAssemblyName;
+	string areaAlias = ViewBag.WidgetAreaAlias;
+
+	var widgetParts = assemblyName.Split('.');
+	var widgetName = assemblyName;
+	if (widgetParts.Length > 1) {
+		widgetName = widgetParts[widgetParts.Length - 1];
+	}
+}
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - @assemblyName</title>
+	@Html.CarrotWeb().RenderControlToHtml((new jquerybasic() { SelectedSkin = jquerybasic.jQueryTheme.Silver }))
+	@(new Bootstrap5() { SelectedSkin = Bootstrap5.Bootstrap5ColorScheme.RaspberrySorbet })
+
+	<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript">
+		function cmsInputEnterBlock() {
+			$('input').each(function () {
+				$(this).attr('onkeypress', "return ProcessKeyPress(event)");
+			});
+		}
+
+		$(document).ready(function () {
+			doStyles();
+		});
+
+		$(document).ajaxComplete(function (event, xhr, settings) {
+			doStyles();
+		});
+
+		function doStyles() {
+			$("input:button, input:submit, input:reset, button").button();
+
+			$("input:button, input:submit, input:reset, button").each(function () {
+				if (!$(this).hasClass("btn")) {
+					$(this).addClass('btn btn-primary');
+				}
+				if ($(this).hasClass("btn-default")) {
+					$(this).addClass('btn-primary');
+				}
+			});
+
+			$(".dateRegion").each(function () {
+				$(this).datepicker({
+					changeMonth: true,
+					changeYear: true,
+					showOn: "both",
+					buttonImage: '/Content/calendar.png',
+					buttonImageOnly: true,
+					constrainInput: true,
+					beforeShow: function () {
+						setTimeout(function () {
+							$('.ui-datepicker').css('z-index', 15);
+						}, 0);
+					}
+				});
+			});
+		}
+	</script>
+
+	@* https://cdnjs.com/libraries/tinymce/6.8.3 *@
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.3/tinymce.min.js" integrity="sha512-VCEWnpOl7PIhbYMcb64pqGZYez41C2uws/M/mDdGPy+vtEJHd9BqbShE4/VNnnZdr7YCPOjd+CBmYca/7WWWCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script type="text/javascript">
+		function cmsTinyMceInit(w, h, r) {
+			tinymce.init({
+				selector: "textarea.mceEditor",
+				promotion: false,
+				convert_unsafe_embeds: true,
+				height: h,
+				width: w,
+				resize: r,
+				menubar: false,
+				plugins: 'image link lists media charmap searchreplace visualblocks table preview code codesample help',
+				toolbar: [
+					'bold italic underline strikethrough sub sup | blocks forecolor backcolor | blockquote alignleft aligncenter alignright alignjustify outdent indent | help | ',
+					'undo redo searchreplace | bullist numlist | removeformat pastetext | link unlink anchor image media customfilebrowser | charmap codesample code preview visualblocks'
+				],
+				content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+			});
+		}
+
+		function cmsPreSaveTrigger() {
+			if (tinymce) {
+				var tgr = tinymce.triggerSave();
+			}
+
+			return true;
+		}
+	</script>
+
+	<script type="text/javascript">
+		var bTinyLoaded = false;
+
+		function cmsAjaxFailed() {
+		}
+
+		function AjaxTinyLoad() {
+			if (!bTinyLoaded) {
+				cmsTinyMceInit(875, 500, false);
+			}
+			bTinyLoaded = true;
+		}
+
+		$(document).ready(function () {
+			AjaxTinyLoad();
+		});
+
+		$(document).ajaxComplete(function (event, xhr, settings) {
+			AjaxTinyLoad();
+		});
+	</script>
+
+	@RenderSection("scripts", required: false)
+</head>
+<body>
+	<div class="container">
+		<h2>Widget : @assemblyName</h2>
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary" aria-label="navbar">
+		<div class="container">
+			@Html.ActionLink(string.Format("Widget: {0}  (Core)", widgetName), "Index", "Home", null, new { @class = "navbar-brand" })
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarWidget" aria-controls="navbarWidget" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarWidget">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "TestView1;", "Test", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+						@Html.ActionLink("Display 1", "TestView1", "Test", null, new { @class = "nav-link" })
+					}
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "TestView2", "Test", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+						@Html.ActionLink("Display 2", "TestView2", "Test", null, new { @class = "nav-link" })
+					}
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "TestView3", "Test", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+						@Html.ActionLink("Display 3", "TestView3", "Test", null, new { @class = "nav-link" })
+					}
+
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "*", "Admin", new { @id = "tabAdmin", @class = "active nav-item dropdown" }, new { @id = "tabAdmin", @class = "nav-item dropdown" })) {
+						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Admin Test </a>
+						<ul class="dropdown-menu">
+							@* <li>@Html.ActionLink("Database", "CalendarDatabase", "Admin", null, new { @class = "dropdown-item" })</li> *@
+							<li>@Html.ActionLink("List Events", "Index", "Admin", null, new { @class = "dropdown-item" })</li>
+							<li>@Html.ActionLink("Add Event", "CalendarAdminAdd", "Admin", null, new { @class = "dropdown-item" })</li>
+							@*<li>@Html.ActionLink("Categories", "CalendarAdminCat", "Admin", null, new { @class = "dropdown-item" })</li> *@
+						</ul>
+					}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - @assemblyName</p>
+		</footer>
+	</div>
+</body>
+</html>

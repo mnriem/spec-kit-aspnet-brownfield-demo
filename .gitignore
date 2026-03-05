@@ -1,0 +1,22 @@
+# Environment / secrets — never commit
+.env
+
+# Visual Studio user-specific files
+*.user
+*.suo
+*.swp
+.vs/
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+
+# macOS
+.DS_Store
+
+# Windows thumbnails
+Thumbs.db
+
+# Log files
+*.log
+*.tmp

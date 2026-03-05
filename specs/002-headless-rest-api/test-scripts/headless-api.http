@@ -1,0 +1,166 @@
+### CarrotCakeCMS Headless REST API — VS Code REST Client
+### Install: humao.rest-client extension
+### Usage: Update @baseUrl, @clientId, @clientSecret, @siteId below, then click "Send Request"
+
+@baseUrl = http://localhost:5000
+@clientId = dev-client
+@clientSecret = my-super-secret
+@siteId = 00000000-0000-0000-0000-000000000000
+
+# -------------------------------------------
+# Step 1: Obtain a token (run this first)
+# Copy the token value from the response into @token below
+# -------------------------------------------
+
+### 1a. Token — valid credentials
+# @name tokenRequest
+POST {{baseUrl}}/api/headless/token
+Content-Type: application/json
+
+{
+  "clientId": "{{clientId}}",
+  "clientSecret": "{{clientSecret}}"
+}
+
+###
+
+# -------------------------------------------
+# After running the token request above,
+# set @token to the value from data.token:
+# -------------------------------------------
+@token = {{tokenRequest.response.body.$.data.token}}
+
+### 1b. Token — invalid credentials (expect 401)
+POST {{baseUrl}}/api/headless/token
+Content-Type: application/json
+
+{
+  "clientId": "{{clientId}}",
+  "clientSecret": "WRONG_SECRET"
+}
+
+### 1c. Token — missing clientId (expect 400)
+POST {{baseUrl}}/api/headless/token
+Content-Type: application/json
+
+{
+  "clientSecret": "{{clientSecret}}"
+}
+
+# -------------------------------------------
+# Pages
+# -------------------------------------------
+
+### 2a. List all pages (default pagination)
+GET {{baseUrl}}/api/headless/pages?siteId={{siteId}}
+Authorization: Bearer {{token}}
+
+### 2b. List pages — page 2, pageSize 5
+GET {{baseUrl}}/api/headless/pages?siteId={{siteId}}&page=2&pageSize=5
+Authorization: Bearer {{token}}
+
+### 2c. Get page by slug — published (expect 200)
+GET {{baseUrl}}/api/headless/pages?siteId={{siteId}}&slug=/about-us
+Authorization: Bearer {{token}}
+
+### 2d. Get page by slug — non-existent (expect 404)
+GET {{baseUrl}}/api/headless/pages?siteId={{siteId}}&slug=/this-page-does-not-exist
+Authorization: Bearer {{token}}
+
+### 2e. Get page — no token (expect 401)
+GET {{baseUrl}}/api/headless/pages?siteId={{siteId}}&slug=/about-us
+
+# -------------------------------------------
+# Posts
+# -------------------------------------------
+
+### 3a. List all posts (no filters)
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}
+Authorization: Bearer {{token}}
+
+### 3b. List posts filtered by category slug
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&category=news
+Authorization: Bearer {{token}}
+
+### 3c. List posts filtered by tag slug
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&tag=featured
+Authorization: Bearer {{token}}
+
+### 3d. List posts filtered by date range
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&dateFrom=2025-01-01&dateTo=2025-12-31
+Authorization: Bearer {{token}}
+
+### 3e. List posts — category AND tag AND date range (AND logic)
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&category=news&tag=featured&dateFrom=2025-01-01&dateTo=2025-12-31&page=1&pageSize=10
+Authorization: Bearer {{token}}
+
+### 3f. List posts — out-of-range page (expect 200 with empty data array)
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&page=9999
+Authorization: Bearer {{token}}
+
+### 3g. List posts — invalid dateFrom format (expect 400)
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&dateFrom=not-a-date
+Authorization: Bearer {{token}}
+
+### 3h. Get single post by slug
+GET {{baseUrl}}/api/headless/posts?siteId={{siteId}}&slug=/blog/2025/01/hello-world
+Authorization: Bearer {{token}}
+
+# -------------------------------------------
+# Navigation
+# -------------------------------------------
+
+### 4a. Navigation tree for site (expect hierarchical JSON)
+GET {{baseUrl}}/api/headless/navigation?siteId={{siteId}}
+Authorization: Bearer {{token}}
+
+### 4b. Navigation — no siteId on multi-site (expect 400 if multiple sites)
+GET {{baseUrl}}/api/headless/navigation
+Authorization: Bearer {{token}}
+
+### 4c. Navigation — non-existent siteId (expect 404)
+GET {{baseUrl}}/api/headless/navigation?siteId=ffffffff-ffff-ffff-ffff-ffffffffffff
+Authorization: Bearer {{token}}
+
+# -------------------------------------------
+# Snippets
+# -------------------------------------------
+
+### 5a. Get snippet by name (expect 200)
+GET {{baseUrl}}/api/headless/snippets?siteId={{siteId}}&name=promo-banner
+Authorization: Bearer {{token}}
+
+### 5b. Get snippet — non-existent name (expect 404)
+GET {{baseUrl}}/api/headless/snippets?siteId={{siteId}}&name=does-not-exist
+Authorization: Bearer {{token}}
+
+### 5c. Get snippet — missing name parameter (expect 400)
+GET {{baseUrl}}/api/headless/snippets?siteId={{siteId}}
+Authorization: Bearer {{token}}
+
+# -------------------------------------------
+# Widget Zones
+# -------------------------------------------
+
+### 6a. Get widget zone for a page (expect 200)
+GET {{baseUrl}}/api/headless/widgetzones?siteId={{siteId}}&pageSlug=/home&zone=sidebar
+Authorization: Bearer {{token}}
+
+### 6b. Widget zone — alternative zone name
+GET {{baseUrl}}/api/headless/widgetzones?siteId={{siteId}}&pageSlug=/home&zone=footer
+Authorization: Bearer {{token}}
+
+### 6c. Widget zone — page slug not found (expect 404)
+GET {{baseUrl}}/api/headless/widgetzones?siteId={{siteId}}&pageSlug=/nonexistent-page&zone=sidebar
+Authorization: Bearer {{token}}
+
+### 6d. Widget zone — missing zone parameter (expect 400)
+GET {{baseUrl}}/api/headless/widgetzones?siteId={{siteId}}&pageSlug=/home
+Authorization: Bearer {{token}}
+
+# -------------------------------------------
+# Health check
+# -------------------------------------------
+
+### 7a. Health check (expect {"status":"Healthy"})
+GET {{baseUrl}}/health

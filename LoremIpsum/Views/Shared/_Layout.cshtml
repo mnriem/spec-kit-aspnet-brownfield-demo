@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = null;
+
+	string assemblyName = ViewBag.WidgetAssemblyName;
+	string areaAlias = ViewBag.WidgetAreaAlias;
+
+	var widgetParts = assemblyName.Split('.');
+	var widgetName = assemblyName;
+	if (widgetParts.Length > 1) {
+		widgetName = widgetParts[widgetParts.Length - 1];
+	}
+}
+
+<html lang="en" data-bs-theme="auto">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>@ViewBag.Title - @assemblyName</title>
+	@(new jquerybasic() { SelectedSkin = jquerybasic.jQueryTheme.Silver })
+	@(new Bootstrap5() { SelectedSkin = Bootstrap5.Bootstrap5ColorScheme.ClassicViolet })
+	<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			doStyles();
+		});
+
+		$(document).ajaxComplete(function (event, xhr, settings) {
+			doStyles();
+		});
+
+		function doStyles() {
+			$("input:button, input:submit, input:reset, button").button();
+
+			$("input:button, input:submit, input:reset, button").each(function () {
+				if (!$(this).hasClass("btn")) {
+					$(this).addClass('btn btn-primary');
+				}
+				if ($(this).hasClass("btn-default")) {
+					$(this).addClass('btn-primary');
+				}
+			});
+		}
+
+		$(document).ready(function () {
+			$(".date-picker, .dateRegion ").each(function () {
+				$(this).datepicker({
+					changeMonth: true,
+					changeYear: true,
+					showOn: "both",
+					buttonImage: '/Content/calendar.png',
+					buttonImageOnly: true,
+					constrainInput: true,
+					beforeShow: function () {
+						setTimeout(function () {
+							$('.ui-datepicker').css('z-index', 15);
+						}, 0);
+					}
+				});
+			});
+		});
+	</script>
+</head>
+<body>
+	<div class="container">
+		<h2>Widget : @assemblyName</h2>
+	</div>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary" aria-label="navbar">
+		<div class="container">
+			@Html.ActionLink(string.Format("{0}  (Core)", widgetName), "Index", "Admin", new { area = "" }, new { @class = "navbar-brand" })
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarWidget" aria-controls="navbarWidget" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarWidget">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					@if (User.Identity.IsAuthenticated) {
+						<li class="nav-item"><a class="nav-link"> Hello @User.Identity.Name! </a></li>
+						<li class="nav-item"> @Html.ActionLink("Log Out", "LogOut", "Admin", null, new { @class = "nav-link" }) </li>
+					} else {
+						using (Html.CarrotWeb().BeginWrappedItem("li", "Login", "Admin", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+							@Html.ActionLink("Login", "Login", "Admin", null, new { @class = "nav-link" })
+						}
+					}
+					<li>&nbsp;</li>
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "Index", "Admin", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+						@Html.ActionLink("Index", "Index", "Admin", null, new { @class = "nav-link" })
+					}
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "Pages", "Admin", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+						@Html.ActionLink("Pages", "Pages", "Admin", null, new { @class = "nav-link" })
+					}
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "Posts", "Admin", new { @class = "nav-item active" }, new { @class = "nav-item" })) {
+						@Html.ActionLink("Posts", "Posts", "Admin", null, new { @class = "nav-link" })
+					}
+					<li>&nbsp;</li>
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "Pages;Posts", "Admin", new { @id = "tabAdmin", @class = "nav-item dropdown active" }, new { @id = "tabAdmin", @class = "nav-item dropdown" })) {
+						<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Admin Test </a>
+						<ul class="dropdown-menu">
+							<li>@Html.ActionLink("Create Pages", "Pages", "Admin", null, new { @class = "dropdown-item" })</li>
+							<li>@Html.ActionLink("Create Posts", "Posts", "Admin", null, new { @class = "dropdown-item" })</li>
+						</ul>
+					}
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<br />
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - @assemblyName</p>
+		</footer>
+	</div>
+</body>
+</html>

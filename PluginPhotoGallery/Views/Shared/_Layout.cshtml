@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+@{
+	Layout = null;
+
+	string assemblyName = ViewBag.WidgetAssemblyName;
+	string areaAlias = ViewBag.WidgetAreaAlias;
+
+	var widgetParts = assemblyName.Split('.');
+	var widgetName = assemblyName;
+	if (widgetParts.Length > 1) {
+		widgetName = widgetParts[widgetParts.Length - 1];
+	}
+}
+
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - @assemblyName</title>
+	@(new jquerybasic() { SelectedSkin = jquerybasic.jQueryTheme.Silver })
+	@(new Bootstrap() { SelectedSkin = Bootstrap.BootstrapColorScheme.Plum })
+	<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			doStyles();
+		});
+
+		$(document).ajaxComplete(function (event, xhr, settings) {
+			doStyles();
+		});
+
+		function doStyles() {
+			$("input:button, input:submit, input:reset, button").button();
+			$("input:button, input:submit, input:reset, button").each(function () {
+				if (!$(this).hasClass("btn")) {
+					$(this).addClass('btn btn-primary');
+				}
+				if ($(this).hasClass("btn-default")) {
+					$(this).addClass('btn-primary');
+				}
+			});
+
+			$(".dateRegion").each(function () {
+				$(this).datepicker({
+					changeMonth: true,
+					changeYear: true,
+					showOn: "both",
+					buttonImage: '/Content/calendar.png',
+					buttonImageOnly: true,
+					constrainInput: true,
+					beforeShow: function () {
+						setTimeout(function () {
+							$('.ui-datepicker').css('z-index', 15);
+						}, 0);
+					}
+				});
+			});
+		}
+	</script>
+
+	@* https://cdnjs.com/libraries/tinymce/6.8.4 *@
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/6.8.4/tinymce.min.js" integrity="sha512-DgTvLlVQBm8TJnlfqGDPm0re0QnTIv/frIzuARdI8zeZaYeFx+DgEIJhaD6kUCbcnn9wUYwFaMkxT52NdnYNDQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+	<script type="text/javascript">
+		function cmsTinyMceInit(w, h, r) {
+			tinymce.init({
+				selector: "textarea.mceEditor",
+				promotion: false,
+				convert_unsafe_embeds: true,
+				height: h,
+				width: w,
+				resize: r,
+				menubar: false,
+				plugins: 'image link lists media charmap searchreplace visualblocks table preview code codesample help',
+				toolbar: [
+					'bold italic underline strikethrough sub sup | blocks forecolor backcolor | blockquote alignleft aligncenter alignright alignjustify outdent indent | help | ',
+					'undo redo searchreplace | bullist numlist | removeformat pastetext | link unlink anchor image media customfilebrowser | charmap codesample code preview visualblocks'
+				],
+				content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+			});
+		}
+
+		function cmsPreSaveTrigger() {
+			if (tinymce) {
+				var tgr = tinymce.triggerSave();
+			}
+
+			return true;
+		}
+	</script>
+
+	<script type="text/javascript">
+		var bTinyLoaded = false;
+
+		function cmsAjaxFailed() {
+		}
+
+		function AjaxTinyLoad() {
+			if (!bTinyLoaded) {
+				cmsTinyMceInit(875, 500, false);
+			}
+			bTinyLoaded = true;
+		}
+
+		$(document).ready(function () {
+			AjaxTinyLoad();
+		});
+
+		$(document).ajaxComplete(function (event, xhr, settings) {
+			AjaxTinyLoad();
+		});
+	</script>
+
+	<style>
+		.tablepager li {
+			cursor: pointer;
+			float: left;
+			list-style: outside none none;
+			margin: 2px;
+			padding: 4px 0;
+			position: relative;
+		}
+
+		.tablepager a {
+			margin: 5px;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				@Html.ActionLink(string.Format("Widget: {0}  (Core)", widgetName), "Index", "Home", null, new { @class = "navbar-brand" })
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "GalleryList;GalleryView;GalleryView2;GalleryView3;GalleryView4", "Test", new { @class = "active" }, null)) {
+						@Html.ActionLink("Galleries", "GalleryList", "Test")
+					}
+
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "Index;View;Edit", "Test", new { @class = "active" }, null)) {
+						@Html.ActionLink("Images", "Index", "Test")
+					}
+
+					@using (Html.CarrotWeb().BeginWrappedItem("li", "*", "Admin", new { @id = "tabAdmin", @class = "active dropdown" }, new { @id = "tabAdmin", @class = "dropdown" })) {
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin Test <b class="caret"></b></a>
+						<ul class="dropdown-menu">
+							<li>@Html.ActionLink("Gallery List", "Index", "Admin")</li>
+							<li>@Html.ActionLink("Add Gallery", "CreateGallery", "Admin")</li>
+						</ul>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="container body-content">
+		@RenderBody()
+		<hr />
+		<footer>
+			<p>&copy; @DateTime.Now.Year - @assemblyName</p>
+		</footer>
+	</div>
+</body>
+</html>
