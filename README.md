@@ -1,7 +1,7 @@
 
 # spec-kit ASP.NET Brownfield Demo
 
-This project demonstrates a brownfield AI-assisted development workflow using [spec-kit](https://github.com/github/spec-kit) on an existing .NET CMS. Starting from a cloned open-source repository, two new features were added entirely through structured agents in GitHub Copilot Chat. The steps below document exactly what was done — you can follow the same process to extend your own projects.
+This project demonstrates a brownfield AI-assisted development workflow using [spec-kit](https://github.com/github/spec-kit) on an existing .NET CMS. Starting from a cloned open-source repository with ~307,000 lines of C#, Razor, SQL, JavaScript, and config files, two new features were added entirely through structured agents in GitHub Copilot Chat. The steps below document exactly what was done — you can follow the same process to extend your own projects.
 
 > **Note on the workflow:** There was no pre-existing spec-kit constitution or formal specifications in this project. The constitution was generated from scratch by having the agent analyze the existing codebase. The feature specifications are not elaborate formal documents — they are short natural-language prompts describing the desired outcome, as you will see below.
 
