@@ -36,10 +36,10 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 ## Step 3 — Initialize the project
 
 ```bash
-specify init . --ai copilot
+specify init . --integration copilot --integration-options="--skills"
 ```
 
-This scaffolded the spec-kit structure and installed the Copilot custom agents.
+This scaffolded the spec-kit structure and installed the Copilot skills.
 
 ## Step 4 — Open in VS Code
 
@@ -47,29 +47,30 @@ This scaffolded the spec-kit structure and installed the Copilot custom agents.
 code .
 ```
 
-## Step 5 — How to select a spec-kit agent
+## Step 5 — How to invoke a spec-kit skill
 
-All spec-kit agents are available in the Copilot Chat **Agent** mode. Open Copilot Chat, click the **Agent** dropdown (top-left of the chat input), and select the agent you want to invoke.
+All spec-kit skills are available as slash commands in Copilot Chat. Open Copilot Chat and type the slash command for the skill you want to invoke (for example, `/speckit-specify`), followed by your input.
 
-The agents available are:
+The skills available are:
 
-| Agent | Purpose |
+| Skill | Purpose |
 |---|---|
-| `speckit.constitution` | Define project-wide principles and governance |
-| `speckit.specify` | Generate a feature specification from a description |
-| `speckit.clarify` | Ask targeted questions to tighten an existing spec |
-| `speckit.plan` | Produce a technical design and implementation plan |
-| `speckit.analyze` | Check consistency across spec, plan, and tasks |
-| `speckit.tasks` | Generate a dependency-ordered task list |
-| `speckit.checklist` | Produce a custom quality checklist |
-| `speckit.implement` | Execute tasks from `tasks.md` |
-| `speckit.taskstoissues` | Convert tasks into GitHub Issues |
+| `/speckit-constitution` | Define project-wide principles and governance |
+| `/speckit-specify` | Generate a feature specification from a description |
+| `/speckit-clarify` | Ask targeted questions to tighten an existing spec |
+| `/speckit-plan` | Produce a technical design and implementation plan |
+| `/speckit-analyze` | Check consistency across spec, plan, and tasks |
+| `/speckit-tasks` | Generate a dependency-ordered task list |
+| `/speckit-checklist` | Produce a custom quality checklist |
+| `/speckit-implement` | Execute tasks from `tasks.md` |
+| `/speckit-taskstoissues` | Convert tasks into GitHub Issues |
+| `/speckit-converge` | Assess the codebase and append remaining work as tasks |
 
 ---
 
 ## Step 6 — Establish project principles
 
-The **`speckit.constitution`** agent was invoked with:
+The **`/speckit-constitution`** agent was invoked with:
 
 ```
 As this is a pre-existing brownfield project I need you to analyze the
@@ -88,7 +89,7 @@ This created `.specify/memory/constitution.md`, which all subsequent agents resp
 
 ### Step 7 — Write the feature specification
 
-The **`speckit.specify`** agent was invoked with:
+The **`/speckit-specify`** agent was invoked with:
 
 ```
 Add Docker Compose support so developers can run and test the CMS on
@@ -111,7 +112,7 @@ itself is out of scope.
 
 ### Step 8 — Create the implementation plan
 
-The **`speckit.plan`** agent was invoked with:
+The **`/speckit-plan`** agent was invoked with:
 
 ```
 Execute and keep in mind that when dealing with Docker Compose it must
@@ -120,7 +121,7 @@ use the new style `docker compose`.
 
 ### Step 9 — Generate the task list
 
-The **`speckit.tasks`** agent was invoked with:
+The **`/speckit-tasks`** agent was invoked with:
 
 ```
 Execute
@@ -128,7 +129,7 @@ Execute
 
 ### Step 10 — Implement
 
-The **`speckit.implement`** agent was invoked with:
+The **`/speckit-implement`** agent was invoked with:
 
 ```
 Execute
@@ -136,11 +137,11 @@ Execute
 
 Three passes were needed to complete this feature:
 
-**Pass 1** — `speckit.implement` was run with `Execute`. The agent completed tasks T001–T014 and flagged T015 as a manual step.
+**Pass 1** — `/speckit-implement` was run with `Execute`. The agent completed tasks T001–T014 and flagged T015 as a manual step.
 
-**Pass 2** — `speckit.implement` was run again with `Execute`. The agent once more surfaced T015 as requiring manual action.
+**Pass 2** — `/speckit-implement` was run again with `Execute`. The agent once more surfaced T015 as requiring manual action.
 
-**Pass 3** — `speckit.implement` was prompted with `Perform the manual steps`. The agent completed T015 and all remaining tasks.
+**Pass 3** — `/speckit-implement` was prompted with `Perform the manual steps`. The agent completed T015 and all remaining tasks.
 
 ---
 
@@ -148,7 +149,7 @@ Three passes were needed to complete this feature:
 
 ### Step 11 — Write the feature specification
 
-The **`speckit.specify`** agent was invoked with a brief, informal prompt — no upfront design work, no formal requirements document:
+The **`/speckit-specify`** agent was invoked with a brief, informal prompt — no upfront design work, no formal requirements document:
 
 ```
 Add a public read-only REST API to the CMS that exposes pages, blog posts,
@@ -159,11 +160,11 @@ token-based authentication so it can serve as a headless backend for SPAs,
 static site generators, or mobile apps.
 ```
 
-This is a good example of how lightweight the input can be: a few sentences of intent were enough for `speckit.specify` to produce a full structured specification.
+This is a good example of how lightweight the input can be: a few sentences of intent were enough for `/speckit-specify` to produce a full structured specification.
 
 ### Step 12 — Create the implementation plan
 
-The **`speckit.plan`** agent was invoked with:
+The **`/speckit-plan`** agent was invoked with:
 
 ```
 Execute and keep in mind that we also need simple scripts to test the API
@@ -172,7 +173,7 @@ ourselves
 
 ### Step 13 — Generate the task list
 
-The **`speckit.tasks`** agent was invoked with:
+The **`/speckit-tasks`** agent was invoked with:
 
 ```
 Execute
@@ -180,7 +181,7 @@ Execute
 
 ### Step 14 — Implement
 
-The **`speckit.implement`** agent was invoked with:
+The **`/speckit-implement`** agent was invoked with:
 
 ```
 Execute
